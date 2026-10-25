@@ -87,9 +87,46 @@ export default function App() {
   const [language, setLanguage] = useState('en');
   const [activeTab, setActiveTab] = useState('home');
   const [completedTasks, setCompletedTasks] = useState([]);
+  const [crops, setCrops] = useState(cropData);
+const [showAddCrop, setShowAddCrop] = useState(false);
+const [newCropName, setNewCropName] = useState('');
+const [newCropStage, setNewCropStage] = useState('planting');
 
   const t = translations[language];
 
+const addNewCrop = () => {
+  const name = newCropName.trim();
+
+  if (!name) {
+    Alert.alert(
+      language === 'en' ? 'Crop name required' : 'የሰብል ስም ያስፈልጋል',
+      language === 'en'
+        ? 'Please enter a crop name.'
+        : 'እባክዎ የሰብል ስም ያስገቡ።'
+    );
+    return;
+  }
+
+  const newCrop = {
+    id: Date.now().toString(),
+    icon: '🌱',
+    name,
+    status: newCropStage,
+    color: '#E0F1E9',
+  };
+
+  setCrops((previousCrops) => [...previousCrops, newCrop]);
+  setNewCropName('');
+  setNewCropStage('planting');
+  setShowAddCrop(false);
+
+  Alert.alert(
+    language === 'en' ? 'Success' : 'ተሳክቷል',
+    language === 'en'
+      ? `${name} added successfully!`
+      : `${name} በተሳካ ሁኔታ ታክሏል!`
+  );
+};
   const toggleTask = (id) => {
     setCompletedTasks((previous) =>
       previous.includes(id)
